@@ -21,8 +21,10 @@ import pathlib
 import platform
 import sys
 
+from multiprocessing import Process, Queue
 from matplotlib import pyplot
 
+CSV = r"JFK-1986.csv"
 
 def ReadData():
 
@@ -31,16 +33,12 @@ def ReadData():
     # Open file #
 
     # Get file path from user
-    data_file = r"C:\Users\Biggs\OneDrive\Exam Revision\Python\JFK-1986.csv"
-    #data_file = input("Enter the file path for the weather data:")
-    #data_file = pathlib.Path('C:', '/', 'Users', 'Biggs', 'OneDrive', 'Exam Revision', 'Python')
-    #data_file = os.path.join('C:\\', 'Users', 'Biggs', 'OneDrive', 'Exam Revision', 'Python', 'JFK-1986.csv') #r'C:/Users/James/OneDrive/Exam Revision/Python/JFK-1986.csv'
-    
+    data_file = CSV
+
     print(data_file)
 
     # Give open command
-    infile = open(data_file)
-    #Test: print(infile.read())
+    infile = open(data_file, 'r')
 
     # Read lines from file #
     idata_list = [] # List of lists 🤭
@@ -79,7 +77,10 @@ def ReadData():
 
         #Convert to Celsius
         high_temp = (high_t - 32) / 1.8
+        high_temp = round(high_temp, 1)
+
         low_temp = (low_t - 32) / 1.8
+        low_temp = round(low_temp, 1)
 
         rainfall = float(temp_list[25])
 
@@ -102,7 +103,6 @@ def ReadData():
     #print(idata_list[0])
     #print(idata_list[-1])
     return idata_list
-
 
 
 def AnalyzeData(idata_list):
@@ -159,7 +159,6 @@ def AnalyzeData(idata_list):
     return maxsofar, hottest_day, minsofar, coldest_day, sumofmax, sumofmin, rain_maxsofar, rain_sum
 
 
-
 def PresentResults(idata_list, imaxsofar, ihottest_day, iminsofar, icoldest_day, isumofmax, isumofmin, irain_maxsofar, irain_sum):
 
     ##### Present Results #####
@@ -194,7 +193,6 @@ def PresentResults(idata_list, imaxsofar, ihottest_day, iminsofar, icoldest_day,
     print("Average daily rainfall:", round(irain_sum), 2)
 
 
-
 def PresentGraph(idata_list):
     xlist = range(1, 366)
 
@@ -214,9 +212,17 @@ def PresentGraph(idata_list):
     pyplot.legend()
     pyplot.show()
 
+process_list = []
+multi_q = Queue    # Perhaps not required, since the ReadData() order is irrelevant
 
 
 
+"""
+if __name__ == '__main__':
+    p = Process(target=ReadData)
+"""
+    
+    
 
 data_list = ReadData()
 maxsofar, hottest_day, minsofar, coldest_day, sumofmax, sumofmin, rain_maxsofar, rain_sum = AnalyzeData(data_list)
