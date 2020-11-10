@@ -3,4 +3,4 @@ Produce weather graphs for a specified time period
 
 Sameple:
 
-![Sample][https://github.com/NascentSolutions/weather-analyzer/blob/master/Sample.png]
+![Sample](https://github.com/NascentSolutions/weather-analyzer/blob/master/Sample.png)
